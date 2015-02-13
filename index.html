@@ -83,9 +83,9 @@ $scope.asset = $scope.pageJSON.page.contentSectionGroups.item.contentGroupSectio
 			
 			for (var i = itemIndex; i < items.length; i++) {
 				var item = items[i];
-				
+
 				console.log("------------------\nitem:" + i + " | item depth:" + item.depth + " | item label:" + item.label + " | list depth:" + listDepth);
-				
+
 				if(item.depth == listDepth) {
 					console.log("chose to push into tieredMenu.");
 					tieredMenu.push(item);
@@ -102,7 +102,7 @@ $scope.asset = $scope.pageJSON.page.contentSectionGroups.item.contentGroupSectio
 					console.log("chose to break.");
 					break;
 				}
-				
+
 				//debugger;
 			}
 			return [tieredMenu,i];
