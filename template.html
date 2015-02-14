@@ -6,50 +6,62 @@
 </head>
 <body>
 
-	<!-- code below will eventually reside in your componentName-view.html file. note: this doesn't add the parent passed classes yet (like for bgcolor and margins). -->
-	<section data-ng-app="portalApp.menu" data-ng-controller="menuController">
+<!-- code below will eventually reside in your componentName-view.html file. note: this doesn't add the parent passed classes yet (like for bgcolor and margins). -->
+<section data-ng-app="portalApp.menu" data-ng-controller="menuController">
 
-		<!-- Toss your HTML here -->
-		<span data-ng-bind-html="myVariable | myFilter"></span>
+	<!-- Toss your HTML here -->
+	<span data-ng-bind-html="myVariable | myFilter"></span>
 
-		<!-- JSON output section. note: remember to remove this when you move this to WCM. -->
-		<hr class="divider">
-		<h2>Your Page JSON: copy and view/edit <a href="https://www.jsoneditoronline.org/" target="pageJSON">here</a>. Strip line breaks <a href="http://www.textfixer.com/tools/remove-line-breaks.php" target="stripLBs">here</a></h2>
-		<textarea id="pageJSONtext" rows="20" cols="100" wrap="hard">{{pageJSON}}</textarea>
+	<!-- JSON output section. note: remember to remove this when you move this to WCM. -->
+	<hr class="divider">
+	<h2>Your Page JSON: copy and view/edit <a href="https://www.jsoneditoronline.org/" target="pageJSON">here</a>. Strip line breaks <a href="http://www.textfixer.com/tools/remove-line-breaks.php" target="stripLBs">here</a></h2>
+	<textarea id="pageJSONtext" rows="20" cols="100" wrap="hard">{{pageJSON}}</textarea>
 
-	</section>
+</section>
 
 
-	<!-- code below will eventually reside in your componentName-controller.js file. Remember to remove the <script> tag and remove the lines for $scope.pageJSON and $scope.asset -->
-	<script>
-		// note: pulling in 'ngSanitize' below because i want to safely output strings from controller to view.
-		var menuControllerModule = angular.module("portalApp.menu", ['ngSanitize']);
+<!-- code below will eventually reside in your componentName-controller.js file. Remember to remove the <script> tag and remove the lines for $scope.pageJSON and $scope.asset -->
+<script>
+	// note: pulling in 'ngSanitize' below because i want to safely output strings from controller to view.
+	var menuControllerModule = angular.module("portalApp.menu", ['ngSanitize']);
 
-		// Module Controller:
-		menuControllerModule.controller("menuController",
-			function($scope) {
+// Module Controller:
+	menuControllerModule.controller("menuController",
+		function($scope) {
 
-// TODO: replace your page's JSON with the example one below. note: remember to remove this when you move this to WCM.
-$scope.pageJSON = { "page": { "content-type": "/page/page-collection", "display-template": "/templates/page/page-collection.ftl", "contentSectionGroups": { "item": { "contentGroupSections": { "item": { "value": "Rage" } } } } } }
-// get the asset variable like on portal2.0 site. note: remember to remove this when you move this to WCM.
-$scope.asset = $scope.pageJSON.page.contentSectionGroups.item.contentGroupSections.item;
+			// TODO: replace your page's JSON with the example one below. note: remember to remove this when you move this to WCM.
+			$scope.pageJSON = { "page": { "content-type": "/page/page-collection", "display-template": "/templates/page/page-collection.ftl", "contentSectionGroups": { "item": { "contentGroupSections": { "item": { "value": "Rage" } } } } } }
+			// get the asset variable like on portal2.0 site. note: remember to remove this when you move this to WCM.
+			$scope.asset = $scope.pageJSON.page.contentSectionGroups.item.contentGroupSections.item;
 
-				// Toss your JS here. note: $scope.asset is available.
-				$scope.myVariable = getSomething($scope.asset);
-			}
-		);		
+			// Toss your JS here. note: $scope.asset is available.
+			$scope.myVariable = getSomething($scope.asset);
+		}
+	);		
 
-		// Module Filters Go Here:
-		menuControllerModule.filter("myFilter", function() {
-			return function(myItem) {
-				return "Unicorn " + myItem;
-			}
-		});
+// Module Controller Functions Go Here:
+	/**
+	* getSomething: returns the passed item's value key's value with " is Real." appended.
+	*               note that the passed item must have a value.
+	* @param {Object} item
+	* @return {String} item.value with text added at the end of it.
+	*/
+	var getSomething = function(item) {
+		return item.value + " is Real.";
+	};
 
-		// Module Controller Functions Go Here:
-		var getSomething = function(item) {
-			return item.value + " is Real.";
-		};
-	</script>
+// Module Filters Go Here:
+	/**
+	* | myFilter: returns the passed item's value (stored in myItem) with "Unicorn " prepended.
+	*             note that this is silly.
+	* @passed {String} becomes referenced in myItem.
+	* @return {String} value with text added before it.
+	*/
+	menuControllerModule.filter("myFilter", function() {
+		return function(myItem) {
+			return "Unicorn " + myItem;
+		}
+	});
+</script>
 </body>
 </html>
