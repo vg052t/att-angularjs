@@ -7,14 +7,15 @@
 <body>
 
 <!-- code below will eventually reside in your componentName-view.html file. note: this doesn't add the parent passed classes yet (like for bgcolor and margins). -->
-<section data-ng-app="portalApp.menu" data-ng-controller="menuController">
+<!-- you also should replace "pageJSON.page.contentSectionGroups.item.contentGroupSections.item" with "asset" for the init parameter. -->
+<section data-ng-app="portalApp.menu" data-ng-controller="menuController" data-ng-init="init(pageJSON.page.contentSectionGroups.item.contentGroupSections.item)">
 
 	<!-- Toss your HTML here -->
 	<span data-ng-bind-html="myVariable | myFilter"></span>
 
 	<!-- JSON output section. note: remember to remove this when you move this to WCM. -->
 	<hr class="divider">
-	<h2>Your Page JSON: copy and view/edit <a href="https://www.jsoneditoronline.org/" target="pageJSON">here</a>. Strip line breaks <a href="http://www.textfixer.com/tools/remove-line-breaks.php" target="stripLBs">here</a></h2>
+	<h2>Your Page JSON: copy and view/edit/compact <a href="https://www.jsoneditoronline.org/" target="pageJSON">here</a>.</h2>
 	<textarea id="pageJSONtext" rows="20" cols="100" wrap="hard">{{pageJSON}}</textarea>
 
 </section>
@@ -31,11 +32,13 @@
 
 			// TODO: replace your page's JSON with the example one below. note: remember to remove this when you move this to WCM.
 			$scope.pageJSON = { "page": { "content-type": "/page/page-collection", "display-template": "/templates/page/page-collection.ftl", "contentSectionGroups": { "item": { "contentGroupSections": { "item": { "value": "Rage" } } } } } }
-			// get the asset variable like on portal2.0 site. note: remember to remove this when you move this to WCM.
-			$scope.asset = $scope.pageJSON.page.contentSectionGroups.item.contentGroupSections.item;
 
-			// Toss your JS here. note: $scope.asset is available.
-			$scope.myVariable = getSomething($scope.asset);
+			// Toss your JS here. note: asset is available to use from this init call.
+			$scope.init = function (asset) {
+				// Toss your JS here. note: $scope.asset is available.
+				$scope.myVariable = getSomething(asset);
+			}
+
 		}
 	);		
 
