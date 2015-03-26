@@ -7,6 +7,7 @@
 <body>
 
 <!-- code below will eventually reside in your componentName-view.html file. note: this doesn't add the parent passed classes yet (like for bgcolor and margins). -->
+<!-- remember that the value in the data-ng-app parameter below is to be included in "static-assets/app/app.js" within the angular.module array parameter. -->
 <section data-ng-app="portalApp.menu" data-ng-controller="menuController" data-ng-attr-style="{{componentWidth && 'width:' + componentWidth || '' }}" class="menu {{componentType}}" data-ng-init="init(pageJSON.page.contentSectionGroups.item.contentGroupSections.item)">
 
 	<script type="text/ng-template" id="menuTree">
@@ -28,7 +29,7 @@
 </section>
 
 
-<!-- code below will eventually reside in your componentName-controller.js file. Remember to remove the <script> tag and remove the lines for $scope.pageJSON and $scope.asset -->
+<!-- code below will eventually reside in your componentName-controller.js file. Remember to remove the <script> tag and remove the lines for $scope.pageJSON -->
 <script>
 	// note: pulling in 'ngSanitize' below because i want to safely output strings from controller to view.
 	var menuControllerModule = angular.module("portalApp.menu", ['ngSanitize']);
@@ -37,7 +38,6 @@
 		function($scope) {
 			// TODO: remove the next line before dropping code onto WCM
 			$scope.pageJSON = {"page":{"contentSectionGroups":{"item":{"contentGroupSections":{"item":{"key":"/site/components/content/menu/navigation/test-menu.xml","value":"test-menu","component":{"content-type":"/component/content-menu","file-name":"test-menu.xml","internal-name":"test-menu","title":"Test Menu","width":"3000px","type":"list","menuItemGroups":{"item":[{"depth":"1","label":null,"pageLinks":null,"pageNavLabel":"false","icon":"false","externalLinks":{"item":{"key":"/site/components/content/media/vg-link01.xml","value":"vg-link01","component":{"content-type":"/component/media-link","display-template":"/templates/media/media-link.ftl","merge-strategy":"inherit-levels","objectGroupId":"ab50","objectId":"ab50ba81-988f-dac1-eee6-c702509594c6","file-name":"vg-link01.xml","folder-name":null,"internal-name":"vg-link01","linkLabel":"Apple","linkPath":"http://www.apple.com","linkTarget":null,"buttonCustomWidth":null,"contentType":"link","buttonSize":"default","buttonColor":"blue","isLinkEmail":"false","skipDependencies":"true","linkPage":null,"linkImage":null,"createdDate":"2/11/2015 19:11:1","lastModifiedDate":"2/11/2015 19:11:1"},"disableFlattening":"false"}},"linkLabelOverrideText":null},{"depth":"2","label":null,"pageLinks":null,"pageNavLabel":"false","icon":"false","externalLinks":{"item":{"key":"/site/components/content/media/vg-link02.xml","value":"vg-link02","component":{"content-type":"/component/media-link","display-template":"/templates/media/media-link.ftl","merge-strategy":"inherit-levels","objectGroupId":"8823","objectId":"88232a91-15c2-7112-87b8-c02b79d06c3e","file-name":"vg-link02.xml","folder-name":null,"internal-name":"vg-link02","linkLabel":"Orange","linkPath":"http://www.orange.com","linkTarget":null,"buttonCustomWidth":null,"contentType":"link","buttonSize":"default","buttonColor":"blue","isLinkEmail":"false","skipDependencies":"true","linkPage":null,"linkImage":null,"createdDate":"2/11/2015 19:12:47","lastModifiedDate":"2/11/2015 19:12:47"},"disableFlattening":"false"}},"linkLabelOverrideText":null},{"depth":"3","label":null,"pageLinks":null,"pageNavLabel":"false","icon":"false","externalLinks":{"item":{"key":"/site/components/content/media/vg-link03.xml","value":"vg-link03","component":{"content-type":"/component/media-link","display-template":"/templates/media/media-link.ftl","merge-strategy":"inherit-levels","objectGroupId":"dd00","objectId":"dd0022d1-589b-7e2e-e424-022ec288c709","file-name":"vg-link03.xml","folder-name":null,"internal-name":"vg-link03","linkLabel":"Grape","linkPath":"http://www.grape.com","linkTarget":null,"buttonCustomWidth":null,"contentType":"link","buttonSize":"default","buttonColor":"blue","isLinkEmail":"false","skipDependencies":"true","linkPage":null,"linkImage":null,"createdDate":"2/11/2015 19:13:59","lastModifiedDate":"2/11/2015 19:13:59"},"disableFlattening":"false"}},"linkLabelOverrideText":null},{"depth":"1","label":null,"pageLinks":null,"pageNavLabel":"false","icon":"false","externalLinks":{"item":{"key":"/site/components/content/media/vg-link04.xml","value":"vg-link04","component":{"content-type":"/component/media-link","display-template":"/templates/media/media-link.ftl","merge-strategy":"inherit-levels","objectGroupId":"d64c","objectId":"d64cfe64-e1ec-e164-6f1f-77545caa6de0","file-name":"vg-link04.xml","folder-name":null,"internal-name":"vg-link04","linkLabel":"Lime","linkPath":"http://www.lime.com","linkTarget":null,"buttonCustomWidth":null,"contentType":"link","buttonSize":"default","buttonColor":"blue","isLinkEmail":"false","skipDependencies":"true","linkPage":null,"linkImage":null,"createdDate":"2/11/2015 19:14:58","lastModifiedDate":"2/11/2015 19:14:58"},"disableFlattening":"false"}},"linkLabelOverrideText":null}]}}}}}}}}
-
 			$scope.init = function (asset) {
 				// snag the main component details
 				$scope.componentTitle = asset.component.title;
@@ -62,7 +62,6 @@
 	var sublistify = function(items, listDepth, itemsIndex) {
 		
 		var tieredMenu = [];
-
 		for (var i = itemsIndex; i < items.length; i++) {
 			var item = items[i];
 			if(item.depth == listDepth) {
@@ -70,14 +69,12 @@
 			}
 			else if(item.depth > listDepth) {
 				var submenu = sublistify(items,item.depth,i);
-
 				if(typeof tieredMenu[tieredMenu.length-1].menuItemGroups === "undefined")
 				{
 					var itemStr = '{"item":[]}';
 					tieredMenu[tieredMenu.length-1].menuItemGroups = JSON.parse(itemStr);
 				}
 				tieredMenu[tieredMenu.length-1].menuItemGroups.item = submenu[0];
-
 				i = submenu[1] - 1;
 			}
 			else {
